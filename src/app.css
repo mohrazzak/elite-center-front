@@ -2,15 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 @font-face {
-	font-family: 'Tajawal';
-	font-style: normal;
+	font-family: 'Cairo';
+	src: url('/fonts/Cairo-Regular.eot');
 	src:
-		url('/fonts/Tajawal-Regular.ttf') format('woff'),
-		url('/fonts/Tajawal-Regular.ttf') format('truetype');
-}
-
-body {
-	font-family: 'Tajawal';
+		url('$lib/assets/fonts/Cairo-Regular.eot?#iefix') format('embedded-opentype'),
+		url('$lib/assets/fonts/Cairo-Regular.woff2') format('woff2'),
+		url('$lib/assets/fonts/Cairo-Regular.woff') format('woff'),
+		url('$lib/assets/fonts/Cairo-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
 }
 
 @layer base {

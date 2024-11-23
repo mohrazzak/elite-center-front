@@ -1,0 +1,38 @@
+<script lang="ts">
+	import * as FormPrimitive from 'formsnap';
+	import type { WithoutChild } from 'bits-ui';
+	import { cn } from '$lib/utils.js';
+
+	let {
+		ref = $bindable(null),
+		class: className,
+		errorClasses,
+		children: childrenProp,
+		...restProps
+	}: WithoutChild<FormPrimitive.FieldErrorsProps> & {
+		errorClasses?: string | undefined | null;
+	} = $props();
+</script>
+
+<FormPrimitive.FieldErrors
+	class={cn('text-[0.8rem] font-medium text-destructive', className)}
+	{...restProps}
+>
+	{#snippet children({ errors, errorProps })}
+		{#if childrenProp}
+			{@render childrenProp({ errors, errorProps })}
+		{:else}
+			{#each errors as error}
+				<div
+					{...errorProps}
+					class={cn(
+						errorClasses,
+						'rounded-md border border-red-400 bg-red-50 bg-opacity-5  py-2 ps-2'
+					)}
+				>
+					- {error}.
+				</div>
+			{/each}
+		{/if}
+	{/snippet}
+</FormPrimitive.FieldErrors>

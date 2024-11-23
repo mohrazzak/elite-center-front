@@ -2,4 +2,4 @@
 	let { data } = $props();
 </script>
 
-<div>Home</div>
+<h1>الرئيسية</h1>
