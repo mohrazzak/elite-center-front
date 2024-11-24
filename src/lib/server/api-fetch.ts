@@ -42,6 +42,8 @@ export async function apiFetch({
 
 	const res = await fetch(url, options);
 
+	if (path == '/auth/logout') return res;
+
 	// Handle 401 (Unauthorized)
 	if (res.status === 401 && auth) {
 		console.log('refreshing inside fetch');

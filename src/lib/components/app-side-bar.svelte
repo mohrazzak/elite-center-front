@@ -7,6 +7,10 @@
 	import { useSidebar } from '$lib/components/ui/sidebar/index.js';
 	import MdiUser from '~icons/mdi/user';
 	import MaterialSymbolsLogout from '~icons/material-symbols/logout';
+	import { enhance } from '$app/forms';
+	import Button from './ui/button/button.svelte';
+	import { page } from '$app/stores';
+	import { cn } from '$lib/utils';
 	const sidebar = useSidebar();
 
 	const items = [
@@ -22,16 +26,15 @@
 		}
 	];
 
-	const footerItems = [
-		{ title: 'حسابي', url: '/user-profile', icon: MdiUser },
-		{ title: 'تسجيل الخروج', url: '/logout', icon: MaterialSymbolsLogout }
-	];
+	async function handleLinkClick() {
+		if (sidebar.isMobile) sidebar.toggle();
+	}
 </script>
 
 <Sidebar.Root side="right" collapsible="icon">
 	<Sidebar.Header>
 		<div class="flex items-center justify-center">
-			<enhanced:img src="$lib/assets/images/logo-1.png" class="h-auto w-32" />
+			<enhanced:img src="$lib/assets/images/logo-1.png" class="h-auto w-32" alt="School photo" />
 		</div>
 		<Sidebar.Separator class="my-2" />
 	</Sidebar.Header>
@@ -42,9 +45,15 @@
 				<Sidebar.Menu state={sidebar.state}>
 					{#each items as item (item.title)}
 						<Sidebar.MenuItem>
-							<Sidebar.MenuButton size="lg">
+							<Sidebar.MenuButton
+								size="lg"
+								class={cn(
+									'hover:bg-primary hover:bg-opacity-50 hover:text-white',
+									$page.url.pathname === item.url
+								)}
+							>
 								{#snippet child({ props })}
-									<a href={item.url} {...props}>
+									<a href={item.url} {...props} on:click={handleLinkClick}>
 										<item.icon />
 										<span class="group-data-[state=collapsed]:hidden">{item.title}</span>
 									</a>
@@ -76,12 +85,23 @@
 						{/snippet}
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content side="top" class="w-[--bits-dropdown-menu-anchor-width]">
-						{#each footerItems as item}
-							<DropdownMenu.Item>
-								<a href="/logout">{item.title}</a>
-								<item.icon />
-							</DropdownMenu.Item>
-						{/each}
+						<DropdownMenu.Item>
+							<a href="/user-profile" class="w-full">حسابي</a>
+							<MdiUser />
+						</DropdownMenu.Item>
+
+						<DropdownMenu.Item>
+							<form use:enhance method="POST" action="/auth/logout" class="w-full">
+								<Button
+									type="submit"
+									variant="link"
+									class="link float w-full !p-0 text-lg	text-black hover:no-underline"
+								>
+									<span class="w-full text-right">تسجيل الدخول</span>
+								</Button>
+							</form>
+							<MaterialSymbolsLogout />
+						</DropdownMenu.Item>
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
 			</Sidebar.MenuItem>

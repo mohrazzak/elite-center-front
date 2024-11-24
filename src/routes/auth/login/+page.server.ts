@@ -33,9 +33,12 @@ export const actions: Actions = {
 			console.error('API request error:', error);
 			return setError(form, 'خطأ عند الإتصال في السيرفر.');
 		}
+		if(!res.ok) 			return setError(form, 'password','اسم المستخدم او كلمة المرور خطاً');
 
 		// Set the access token in cookies or session
 		const response = await res.json();
+
+
 		setAT(e, response.accessToken);
 
 		const rt =

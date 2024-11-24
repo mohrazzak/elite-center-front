@@ -13,6 +13,7 @@
 	const flash = getFlash(page);
 
 	$effect(() => {
+		$inspect($flash);
 		if ($flash) {
 			const { message, type } = $flash;
 			toast[type](message);
@@ -21,16 +22,16 @@
 
 	$flash = undefined;
 
-	let isProtected = $derived(!$page.url.pathname.startsWith('/auth'));
+	let isProtected = $derived($page.url.pathname.startsWith('/auth'));
 </script>
 
 <Sidebar.Provider>
-	{#if isProtected}
+	{#if !isProtected}
 		<AppSideBar />
 	{/if}
 	<Toaster richColors closeButton />
-	<main class="p-4">
-		{#if isProtected}
+	<main>
+		{#if !isProtected}
 			<Sidebar.Trigger />
 		{/if}
 		{@render children?.()}
